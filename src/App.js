@@ -5,49 +5,67 @@ import Person from './Person/Person';
 class App extends Component {
   state = {
     persons: [
-      { name: 'A' },
-      { name: 'B' },
-      { name: 'C' }
-    ]
-  }
-  switchNameHandler = (newName) => {
-    this.setState({
-      persons: [
-        { name: 'A' },
-        { name: newName },
-        { name: 'E' }
-      ]
-    })
+      { name: 'A', id: 'asedf'},
+      { name: 'B', id: 'hubjj' },
+      { name: 'C', id: 'rtyhn' },
+      { name: 'D', id: 'uigjk' }
+    ],
+    showPersons: false
   }
 
-  changeNameHandler = (event) => {
-    this.setState(
-      {
-        persons: [
-          { name: 'A' },
-          { name: event.target.value },
-          { name: 'E' }
-        ]
-      }
-    )
+  togglePersonsDisplay = () => {
+    let display = this.state.showPersons;
+    this.setState({
+      showPersons: !display
+    });
+  }
+
+  deletePerson = (index) => {
+    const personsArr = [...this.state.persons];
+    personsArr.splice(index, 1);
+    this.setState({persons: personsArr});
   }
 
   render() {
+
+    const style = {
+      backgroundColor: 'green',
+      font: 'inherit',
+      border: 'none',
+      borderRadius: '4px',
+      padding: '10px',
+      color : 'white',
+      cursor: 'pointer',
+      boxShadow: '0 0 10px 6px rgb(214, 214, 214)'
+    };
+
+    let persons = null;
+    if( this.state.showPersons ){
+      persons = (
+        <div>
+          {
+            this.state.persons.map( (person, index) =>{
+              return <Person 
+                delete = {() => this.deletePerson(index)}
+                name = {person.name}
+                key = {person.id}
+                />
+            })
+          }
+        </div>
+      );
+
+      style.backgroundColor = 'red';
+    }
+
     return (
       <div className="App">
         <h1>First React App</h1>
-        <button onClick={() => this.switchNameHandler('D')}>Switch Names</button>
-        <Person
-          name={this.state.persons[0].name}
-          click={this.switchNameHandler.bind(this, 'F')}
-        />
-        <Person
-          name={this.state.persons[1].name}
-          changeName = {this.changeNameHandler}
-        />
-        <Person
-          name={this.state.persons[2].name}
-        />
+        <button
+          style = {style}
+          onClick={this.togglePersonsDisplay}
+        >Toggle Persons</button>
+        {persons}
       </div>
     );
   }
