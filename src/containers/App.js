@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
+
   state = {
     persons: [
       { name: 'A', id: 'asedf'},
@@ -57,11 +59,9 @@ class App extends Component {
 
     return (
       <div className="App">
-        <h1>First React App</h1>
-        <button
-          style = {style}
-          onClick={this.togglePersonsDisplay}
-        >Toggle Persons</button>
+        <Cockpit title = {this.props.appTitle}
+        styles = {style}
+        showPersons = {this.togglePersonsDisplay}/>
         {persons}
       </div>
       
